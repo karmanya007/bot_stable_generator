@@ -1,7 +1,7 @@
 name: Schedule script
 on:
   schedule:
-    - cron: '0 8 * * *' # every day at 2:30 AM IST
+    - cron: '10 8 * * *' # every day at 8:10 AM UTC ( 2:40 AM IST)
 jobs:
   run-script:
     runs-on: ubuntu-latest
