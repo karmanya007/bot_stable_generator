@@ -20,4 +20,4 @@ jobs:
       - name: Install replicate package
         run: pip install replicate
       - name: Run script
-        run: python3 ../script.py
+        run: cd .. && python3 script.py
