@@ -12,12 +12,14 @@ jobs:
       REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
     steps:
       - name: Install dependencies
-        run: python3 -m pip install --upgrade pip
+          run: python3 -m pip install --upgrade pip
       - name: Install requests package
-        run: pip install requests
+          run: pip install requests
       - name: Install twitter package
-        run: pip install twitter
+          run: pip install twitter
       - name: Install replicate package
-        run: pip install replicate
+          run: pip install replicate
       - name: Run script
-        run: ls && python3 script.py
+          run: ls -alps && python3 script.py
+          env:
+            key: ${{secrets.REPLICATE_API_TOKEN}}
