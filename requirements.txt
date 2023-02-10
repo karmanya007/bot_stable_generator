@@ -1,15 +1,6 @@
-autopep8
-certifi
-charset-normalizer
-idna
 oauthlib
-packaging
-pycodestyle
-pydantic
 python-dotenv
 replicate
 requests
 requests-oauthlib
 tweepy
-typing_extensions
-urllib3
