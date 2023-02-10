@@ -15,15 +15,15 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-          run: |
-            python -m pip install --upgrade pip
-            pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run script
-          env:
-            REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
-            CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
-            CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
-            TWITTER_TOKEN: ${{ secrets.TWITTER_TOKEN }}
-            TWITTER_TOKEN_SECRET: ${{ secrets.TWITTER_TOKEN_SECRET }}
-          run: python script.py
+        env:
+          REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+          CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
+          CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
+          TWITTER_TOKEN: ${{ secrets.TWITTER_TOKEN }}
+          TWITTER_TOKEN_SECRET: ${{ secrets.TWITTER_TOKEN_SECRET }}
+        run: python script.py
