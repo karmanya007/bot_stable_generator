@@ -65,7 +65,7 @@ def post_image():
         'guidance_scale': 7.5,
 
         # Choose a scheduler.
-        'scheduler': "DPMSolverMultistep",
+        'scheduler': "PNDM",
     }
 
     # Get the generated image URL
