@@ -1,13 +1,28 @@
 import requests
 import time
-import twitter
 import replicate
+import os
+from dotenv import load_dotenv
+import tweepy
+
+load_dotenv()
 
 # Add your Twitter API credentials
-bearer_token = "${{ secrets.TWITTER_BEARER_TOKEN }}"
+access_token = os.getenv("TWITTER_TOKEN")
+access_token_secret = os.getenv("TWITTER_TOKEN_SECRET")
+consumer_key = os.getenv("CONSUMER_KEY")
+consumer_secret = os.getenv("CONSUMER_SECRET")
 
-# Authenticate with Twitter API v2
-client = twitter.Client(bearer_token=bearer_token)
+auth = tweepy.OAuth1UserHandler(
+    consumer_key, consumer_secret, access_token, access_token_secret
+)
+
+api = tweepy.API(auth)
+
+public_tweets = api.home_timeline()
+for tweet in public_tweets:
+    print(tweet.text)
+
 
 def post_image():
     # Get the current epoch time
@@ -15,7 +30,8 @@ def post_image():
 
     # Define the API endpoint and the parameters for the request
     model = replicate.models.get("stability-ai/stable-diffusion")
-    version = model.versions.get("f178fa7a1ae43a9a9af01b833b9d2ecf97b1bcb0acfd2dc5dd04895e042863f1")
+    version = model.versions.get(
+        "f178fa7a1ae43a9a9af01b833b9d2ecf97b1bcb0acfd2dc5dd04895e042863f1")
 
     inputs = {
         # Input prompt
@@ -53,16 +69,19 @@ def post_image():
     }
 
     # Get the generated image URL
-    image_url = version.predict(inputs)[0]
+    image_url = version.predict(**inputs)[0]
 
     # Download the image
-    response = requests.get(image_url)
+    response = requests.get(
+        image_url)
     open(f"image{current_epoch}.jpg", "wb").write(response.content)
 
     # Post the image to Twitter
     with open(f"image{current_epoch}.jpg", "rb") as image:
-        media_response = client.media.upload(media=image)
-        media_id = media_response["media_id"]
-        tweet = client.status.update(status="Generated image using replicate.com's stable-diffusion API #imagegeneration #AI", media_ids=[media_id])
+        media_response = api.media_upload(filename=f"image{current_epoch}.jpg")
+        print(media_response)
+        status = api.update_status_with_media(
+            status="Generated image using replicate.com's stable-diffusion API #imagegeneration #AI", filename=f"image{current_epoch}.jpg", file=image)
+
 
 post_image()

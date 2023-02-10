@@ -1,7 +1,7 @@
 name: Schedule script
 on:
   schedule:
-    - cron: '30 23 * * *' # every day at 11:30 AM UTC ( 6:00 PM IST)
+    - cron: '0 18 * * *' # every day at 11:30 AM UTC ( 6:00 PM IST)
   push:
     branches:
       - main
@@ -10,16 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+      CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
+      CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
+      TWITTER_TOKEN: ${{ secrets.TWITTER_TOKEN }}
+      TWITTER_TOKEN_SECRET: ${{ secrets.TWITTER_TOKEN_SECRET }}
     steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip' # caching pip dependencies
       - name: Install dependencies
-          run: python3 -m pip install --upgrade pip
-      - name: Install requests package
-          run: pip install requests
-      - name: Install twitter package
-          run: pip install twitter
-      - name: Install replicate package
-          run: pip install replicate
+          run: python3 -m pip install -r requirements.txt
       - name: Run script
-          run: ls -alps && python3 script.py
-          env:
-            key: ${{secrets.REPLICATE_API_TOKEN}}
+          run: python3 script.py
